@@ -197,16 +197,14 @@ export default function Home() {
         <ScrollReveal direction="up" delay={0.2}>
           <div className="group mt-10 h-[400px] w-full overflow-hidden rounded-2xl border border-border shadow-sm">
             <iframe
-              title="J and AV Poultry Location"
-              src="https://maps.google.com/maps?q=Basak%20Pardo,%20Cebu%20City&t=&z=14&ie=UTF8&iwloc=&output=embed"
-              width="100%"
-              height="100%"
+              src="https://maps.google.com/maps?q=10.285447,123.863709+(J%20and%20AV%20Poultry%20Wholesaling)&z=18&output=embed"
+              className="w-full h-full"
               style={{ border: 0 }}
-              allowFullScreen
+              allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="grayscale-[20%] contrast-125 transition-all duration-700 group-hover:grayscale-0"
-            ></iframe>
+              title="J and AV Poultry Wholesaling Location"
+            />
           </div>
         </ScrollReveal>
       </section>
