@@ -167,21 +167,21 @@ export default function Home() {
                 <li className="flex gap-4">
                   <Phone className="mt-1 h-5 w-5 text-[var(--brand-green-deep)]" />
                   <div>
-                    <div className="font-medium text-foreground">+63 932 328 3463</div>
+                    <div className="font-bold text-foreground">+63 932 328 3463</div>
                     <div className="text-xs text-muted-foreground">Available Mon – Sat, 7AM – 6PM</div>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <Mail className="mt-1 h-5 w-5 text-[var(--brand-green-deep)]" />
                   <div>
-                    <div className="font-medium text-foreground">jandavgenmerch@gmail.com</div>
+                    <div className="font-bold text-foreground">jandavgenmerch@gmail.com</div>
                     <div className="text-xs text-muted-foreground">Email us for inquiries</div>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <MapPin className="mt-1 h-5 w-5 text-[var(--brand-green-deep)]" />
                   <div>
-                    <div className="font-medium text-foreground">Basak Pardo, Cebu City</div>
+                    <div className="font-bold text-foreground">Basak Pardo, Cebu City</div>
                     <div className="text-xs text-muted-foreground">Serving farms and stores across the Visayas region.</div>
                   </div>
                 </li>

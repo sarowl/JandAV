@@ -1,65 +1,89 @@
-"use client"; 
+"use client";
 
-import { Send, User, Phone, Mail, MessageSquare } from "lucide-react";
+import { useState } from "react";
 
 export default function ContactForm() {
-  // form state and email-sending logic here!
-  
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error("Failed");
+
+      setStatus("success");
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  };
+
   return (
-    <form 
-      className="space-y-4" 
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log("Form submitted!"); 
-      }}
-    >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Name Input */}
-        <div className="relative">
-          <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input 
-            placeholder="Your name" 
-            className="w-full rounded-full bg-secondary py-3 pl-11 pr-5 text-sm outline-none ring-0 placeholder:text-muted-foreground focus:ring-2 focus:ring-ring" 
-          />
-        </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <input
+        type="text"
+        name="name"
+        placeholder="Full Name"
+        value={form.name}
+        onChange={handleChange}
+        required
+        className="rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green-deep)]"
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        value={form.email}
+        onChange={handleChange}
+        required
+        className="rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green-deep)]"
+      />
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        value={form.phone}
+        onChange={handleChange}
+        className="rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green-deep)]"
+      />
+      <textarea
+        name="message"
+        placeholder="Your Message"
+        value={form.message}
+        onChange={handleChange}
+        required
+        rows={4}
+        className="rounded-lg border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--brand-green-deep)]"
+      />
 
-        {/* Contact Number Input */}
-        <div className="relative">
-          <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input 
-            placeholder="Contact number" 
-            type="tel" 
-            className="w-full rounded-full bg-secondary py-3 pl-11 pr-5 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring" 
-          />
-        </div>
-      </div>
-
-      {/* Email Input */}
-      <div className="relative">
-        <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <input 
-          placeholder="Your email" 
-          type="email" 
-          className="w-full rounded-full bg-secondary py-3 pl-11 pr-5 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring" 
-        />
-      </div>
-
-      {/* Message Textarea */}
-      <div className="relative">
-        <MessageSquare className="absolute left-4 top-4 h-4 w-4 text-muted-foreground" />
-        <textarea 
-          placeholder="Your message" 
-          rows={6} 
-          className="w-full rounded-2xl bg-secondary py-4 pl-11 pr-5 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring" 
-        />
-      </div>
-
-      <button 
-        type="submit" 
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#1a2614] px-6 py-4 text-white font-semibold text-primary-foreground hover:opacity-90"
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="rounded-full bg-[#1a2614] px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 hover:bg-[#2a3c21] disabled:opacity-50"
       >
-        Send Message <Send className="h-4 w-4" />
+        {status === "sending" ? "Sending..." : "Send Message"}
       </button>
+
+      {status === "success" && (
+        <p className="text-sm text-green-600">Message sent successfully! We'll get back to you soon.</p>
+      )}
+      {status === "error" && (
+        <p className="text-sm text-red-600">Something went wrong. Please try again or contact us directly.</p>
+      )}
     </form>
   );
 }
+  
